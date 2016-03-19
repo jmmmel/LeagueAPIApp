@@ -5,6 +5,7 @@
  */
 package Meldrum.Accounts;
 
+import cs313.meldrum.ownsbey.db.dbHandler;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,12 +35,15 @@ public class Authenticate extends HttpServlet {
         HttpSession session = request.getSession();
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
-        String hashPassword = simpleMD5Hash.Hash(password);
+        dbHandler db = new dbHandler();
         
-        if (userName.equals("James") && hashPassword.equals("7c6a180b36896a0a8c02787eeafb0e4c"))
+        int userId = db.getValidUser(userName, password);
+        
+        if (userId > 0)
         {
             request.setAttribute("errorSignIn", false);            
             session.setAttribute("currentUser", userName);
+            session.setAttribute("currentUserId", userId);
             request.getRequestDispatcher("index.html").forward(request, response);
         }
         else

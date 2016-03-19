@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -24,7 +26,7 @@ import java.util.logging.Logger;
 public class dbHandler {
     private String DB_URL;
     private Connection conn = null;
-    private Statement stmt = null;
+    private PreparedStatement  stmt = null;
     
     public dbHandler(){    
         Properties prop = new Properties();
@@ -48,5 +50,28 @@ public class dbHandler {
             System.out.println("CRITICAL FAILURE");
             System.out.println(ex);
         }
+    }
+    
+    public int getValidUser(String username, String password){
+        int id =-1;
+        try {
+            String hashPass = simpleMD5Hash.Hash(password);
+            String query = "SELECT Id FROM user WHERE username=? AND password=?";
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,username);
+            stmt.setString(2,hashPass);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                id = rs.getInt("Id");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return id;
+        
     }
 }

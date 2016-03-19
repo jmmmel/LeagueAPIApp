@@ -18,7 +18,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MyForum</title>
+    <title>League Compare</title>
     <script src="jquery/jquery-2.2.0.min.js"></script>
     <link href="./css/main.css" rel="stylesheet" />
     <!-- Bootstrap Core CSS -->
