@@ -38,10 +38,9 @@ public class Authenticate extends HttpServlet {
         
         if (userName.equals("James") && hashPassword.equals("7c6a180b36896a0a8c02787eeafb0e4c"))
         {
-            session.setAttribute("signedIn", true);
             request.setAttribute("errorSignIn", false);            
             session.setAttribute("currentUser", userName);
-            request.getRequestDispatcher("NewPost.jsp").forward(request, response);
+            request.getRequestDispatcher("index.html").forward(request, response);
         }
         else
         {

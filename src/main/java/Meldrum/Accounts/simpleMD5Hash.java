@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class simpleMD5Hash 
 {
-    public static String Hash(String password) 
+    protected static String Hash(String password) 
     {
         String passwordToHash = password;
         String generatedPassword = null;
