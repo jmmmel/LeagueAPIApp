@@ -5,13 +5,15 @@
  */
 package cs313.meldrum.ownsbey.leagueapi;
 
+import java.util.List;
+
 /**
  *
  * @author Jake
  */
 public class LastMatches {    
     private String summoner;
-    private Match[] matches;
+    private List<Match> matches;
     private float averageKills;
     private float averageDeaths;
     private float averageAssists;
@@ -19,79 +21,79 @@ public class LastMatches {
     private float averageTotalGold;
     
     // MUST provide a Match array of the last 10 matches
-    public LastMatches(String summoner, Match[] matches) {
+    public LastMatches(String summoner, List<Match> matches) {
         setSummoner(summoner);
         setMatches(matches);
-        
+        int totalMatches = matches.size();
         float averageNum;
         //average kills
         averageNum = 0;
-        for(int i = 0; i <= 10; ++i) {
-            averageNum += matches[i].getKills();
+        for(Match match : matches){
+            averageNum += match.getKills();
         }
-        averageNum /= 10;
+        averageNum /= totalMatches;
         setAverageKills(averageNum);
         
         //average deaths
         averageNum = 0;
-        for(int i = 0; i <= 10; ++i) {
-            averageNum += matches[i].getDeaths();
+        for(Match match : matches){
+            averageNum += match.getDeaths();
         }
-        averageNum /= 10;
+        averageNum /= totalMatches;
         setAverageDeaths(averageNum);
         
         //average assists
         averageNum = 0;
-        for(int i = 0; i <= 10; ++i) {
-            averageNum += matches[i].getAssists();
+        for(Match match : matches){
+            averageNum += match.getAssists();
         }
-        averageNum /= 10;
+        averageNum /= totalMatches;
         setAverageAssists(averageNum);
         
         //average creep score
         averageNum = 0;
-        for(int i = 0; i <= 10; ++i) {
-            averageNum += matches[i].getCreepScore();
+        for(Match match : matches){
+            averageNum += match.getCreepScore();
         }
-        averageNum /= 10;
+        averageNum /= totalMatches;
         setAverageCreepScore(averageNum);
         
         //average total gold
         averageNum = 0;
-        for(int i = 0; i <= 10; ++i) {
-            averageNum += matches[i].getTotalGold();
+        for(Match match : matches){
+            averageNum += match.getTotalGold();
         }
-        averageNum /= 10;
+        averageNum /= totalMatches;
         setAverageTotalGold(averageNum);
     }
     
     public String  getSummoner()          { return summoner; }
-    public Match[] getMatches()           { return matches; }
+    public List<Match> getMatches()           { return matches; }
     public float   getAverageKills()      { return averageKills; }
     public float   getAverageDeaths()     { return averageDeaths; }
     public float   getAverageAssists()    { return averageAssists; }
     public float   getAverageCreepScore() { return averageCreepScore; }
     public float   averageTotalGold()     { return averageTotalGold; }
     
-    public void setSummoner(String summoner) {
+    private void setSummoner(String summoner) {
         this.summoner = summoner; 
     }
-    public void setMatches(Match[] matches) { 
+    private void setMatches(List<Match> matches) { 
         this.matches = matches; 
     }
-    public void setAverageKills(float averageKills) { 
+    private void setAverageKills(float averageKills) { 
         this.averageKills = averageKills; 
     }
-    public void setAverageDeaths(float averageDeaths) { 
+    private void setAverageDeaths(float averageDeaths) { 
         this.averageDeaths = averageDeaths; 
     }
-    public void setAverageAssists(float averageAssists) { 
+    private void setAverageAssists(float averageAssists) { 
         this.averageAssists = averageAssists; 
     }
-    public void setAverageCreepScore(float averageCreepScore) { 
+    private void setAverageCreepScore(float averageCreepScore) { 
         this.averageCreepScore = averageCreepScore; 
     }
-    public void setAverageTotalGold(float averageTotalGold) {
+    private void setAverageTotalGold(float averageTotalGold) {
         this.averageTotalGold = averageTotalGold; 
     }
 }

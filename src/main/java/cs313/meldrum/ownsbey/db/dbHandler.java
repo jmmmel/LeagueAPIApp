@@ -6,6 +6,7 @@
 package cs313.meldrum.ownsbey.db;
 
 import cs313.meldrum.ownsbey.LeagueInteraction.LeagueInteraction;
+import cs313.meldrum.ownsbey.leagueapi.LastMatches;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -56,7 +57,7 @@ public class dbHandler {
         int id =-1;
         try {
             String hashPass = simpleMD5Hash.Hash(password);
-            String query = "SELECT Id FROM user WHERE username=? AND password=?";
+            String query = "SELECT Id FROM users WHERE username=? AND password=?";
             stmt = conn.prepareStatement(query);
             stmt.setString(1,username);
             stmt.setString(2,hashPass);
@@ -71,7 +72,22 @@ public class dbHandler {
             Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return id;
-        
+        return id;        
+    }
+    public LastMatches getMatchHistory(int userId){
+        LastMatches matchHistory = null;
+        try {
+            String query = "SELECT Id FROM user WHERE username=? AND password=?";
+            stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return matchHistory;
     }
 }
