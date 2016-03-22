@@ -1,33 +1,34 @@
 # use "source (path to file)/command.sql" to execute this file
 
-DROP TABLE Users;
-DROP TABLE Statistics;
-DROP TABLE Favorites;
+DROP TABLE users;
+DROP TABLE statistics;
+DROP TABLE favorites;
 
-CREATE TABLE Users (
+CREATE TABLE users (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(32),
-	password VARCHAR(32)
+	password VARCHAR(255)
 );
 
-CREATE TABLE Statistics (
+CREATE TABLE statistics (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	userId INT,
-	sumName VARCHAR(32),
-	avKills FLOAT,
-	avDeaths FLOAT,
-	avAssists FLOAT,
-	avCS FLOAT,
-	avGold FLOAT,
-	FOREIGN KEY (userId) REFERENCES Users(id)
+	userId INT NOT NULL,
+	sumName VARCHAR(32) NOT NULL,
+	kills INT NOT NULL,
+	deaths INT NOT NULL,
+	assists INT NOT NULL,
+	creepScore INT NOT NULL,
+	gold INT NOT NULL,
+        createdTime DATETIME NOT NULL,
+	FOREIGN KEY (userId) REFERENCES users(id)
 );
 
-CREATE TABLE Favorites (
+CREATE TABLE favorites (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	userId INT,
-	favId INT,
-	FOREIGN KEY (userId) REFERENCES Users(id),
-	FOREIGN KEY (favId) REFERENCES Users(id)
+	userId INT NOT NULL,
+	favId INT NOT NULL,
+	FOREIGN KEY (userId) REFERENCES users(id),
+	FOREIGN KEY (favId) REFERENCES users(id)
 );
 
 SHOW tables;
