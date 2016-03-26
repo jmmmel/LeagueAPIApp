@@ -7,8 +7,11 @@ package cs313.meldrum.ownsbey.leagueapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cs313.meldrum.ownsbey.LeagueInteraction.LeagueInteraction;
+import cs313.meldrum.ownsbey.db.dbHandler;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -16,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -36,12 +40,33 @@ public class ShowAPI extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            HttpSession session = request.getSession();
             String summonerName;
-            summonerName = (String)request.getParameter("summoner_name");
+            summonerName = (String)session.getAttribute("currentSummoner");
             LeagueInteraction comms = new LeagueInteraction();
             Map<String, Object> map = comms.GetRecentGames(summonerName);
+            List<Match> matchCollection = new ArrayList<Match>();
+            List<LinkedHashMap<String, Object>> games = (ArrayList<LinkedHashMap<String, Object>>)map.get("games");
+            for(LinkedHashMap<String, Object> game : games){
+                LinkedHashMap<String, Object> stats = (LinkedHashMap<String, Object>)game.get("stats");
+                int userId = 1;
+                Integer kills = (Integer)stats.get("championsKilled");
+                Integer deaths = (Integer)stats.get("numDeaths");
+                Integer assists = (Integer)stats.get("assists");
+                Integer creepScore = (Integer)stats.get("minionsKilled");
+                Integer gold = (Integer)stats.get("goldEarned");
+                if(kills == null){ kills = 0;}
+                if(deaths == null){ deaths = 0;}
+                if(assists == null){ assists = 0;}
+                if(creepScore == null){ creepScore = 0;}
+                if(gold == null){ gold = 0;}
+                matchCollection.add(new Match(kills,deaths,assists,creepScore,gold));
+            }
+            LastMatches matchHistory = new LastMatches(summonerName,matchCollection);
+            dbHandler db = new dbHandler();
+            db.updateMatchHistory(matchHistory);
             request.setAttribute("alldata", map.toString());
-            request.getRequestDispatcher("displayMovies.jsp").forward(request, response);
+            request.getRequestDispatcher("Main.jsp").forward(request, response);
         }
     
 

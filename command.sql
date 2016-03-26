@@ -6,14 +6,14 @@ DROP TABLE favorites;
 
 CREATE TABLE users (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(32),
-	password VARCHAR(255)
+	username VARCHAR(32) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	sumName VARCHAR(32) NOT NULL
 );
 
 CREATE TABLE statistics (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	userId INT NOT NULL,
-	sumName VARCHAR(32) NOT NULL,
 	kills INT NOT NULL,
 	deaths INT NOT NULL,
 	assists INT NOT NULL,
@@ -26,9 +26,8 @@ CREATE TABLE statistics (
 CREATE TABLE favorites (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	userId INT NOT NULL,
-	favId INT NOT NULL,
-	FOREIGN KEY (userId) REFERENCES users(id),
-	FOREIGN KEY (favId) REFERENCES users(id)
+	followedSummoner varchar(32) NOT NULL,
+	FOREIGN KEY (userId) REFERENCES users(id)
 );
 
 SHOW tables;

@@ -7,6 +7,7 @@ package Meldrum.Accounts;
 
 import cs313.meldrum.ownsbey.db.dbHandler;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,14 +38,16 @@ public class Authenticate extends HttpServlet {
         String password = request.getParameter("password");
         dbHandler db = new dbHandler();
         
-        int userId = db.getValidUser(userName, password);
+        String userId = db.getValidUser(userName, password);
         
-        if (userId > 0)
+        if (userId != null)
         {
+            List<String> followList;
+            followList = db.getFollowList(userName);
             request.setAttribute("errorSignIn", false);            
             session.setAttribute("currentUser", userName);
-            session.setAttribute("currentUserId", userId);
-            request.getRequestDispatcher("index.html").forward(request, response);
+            session.setAttribute("currentSummoner", userId);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
         else
         {
