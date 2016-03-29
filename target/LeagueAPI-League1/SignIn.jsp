@@ -61,7 +61,10 @@
                             <input class="field-right" id="password" type="password" name="password">                            
                         </div>
                         <div class="clear"></div>
-                        <input type="submit" value="Login">
+                        <input type="submit" value="Login"><br>
+                        All information is public and obtained from the Riot 
+                        Games API. Visit https://developer.riotgames.com/terms 
+                        for more details.
                     </fieldset>
                 </form>
             </div>
