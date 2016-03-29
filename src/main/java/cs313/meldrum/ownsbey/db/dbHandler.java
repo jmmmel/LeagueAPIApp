@@ -108,7 +108,24 @@ public class dbHandler {
         }
         return matchHistory;
     }
-     public void updateMatchHistory(LastMatches matchHistory){
+    
+    public void addNewUser(String username, String password, String sumName) {
+        try {
+            String query = "INSERT INTO 'leagueapi'.'users' " + 
+                    "('username', 'password', summonerName') " + 
+                    "VALUES (?, ?, ?)";
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, sumName);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateMatchHistory(LastMatches matchHistory){
         int id = -1;
         try {
             String query = "DELETE FROM statistics "

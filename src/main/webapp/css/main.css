@@ -1,7 +1,10 @@
+html {
+    height: 100%;
+}
+
 body {
     color: white;
-    background: linear-gradient(#8c8c8c, #1a1a1a); /* not working... */
-    background: #1a1a1a /* overwrites the last one. Delete this to see what I mean*/
+    background: linear-gradient(#8c8c8c, #1a1a1a);
 }
 
 h1 {

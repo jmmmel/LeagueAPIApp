@@ -64,7 +64,9 @@
                         <input type="submit" value="Login"><br>
                         All information is public and obtained from the Riot 
                         Games API. Visit https://developer.riotgames.com/terms 
-                        for more details.
+                        for more details. <br><br>
+                        
+                        <a href="registration.html">Create a new account</a>
                     </fieldset>
                 </form>
             </div>
@@ -76,5 +78,3 @@
 </body>
 
 </html>
-
-
