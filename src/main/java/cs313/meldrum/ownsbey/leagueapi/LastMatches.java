@@ -5,6 +5,8 @@
  */
 package cs313.meldrum.ownsbey.leagueapi;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,14 +16,16 @@ import java.util.List;
 public class LastMatches {    
     private String summoner;
     private List<Match> matches;
-    private float averageKills;
-    private float averageDeaths;
-    private float averageAssists;
+    private Date updateTime;
+    private float AverageKills;
+    private float AverageDeaths;
+    private float AverageAssists;
     private float averageCreepScore;
     private float averageTotalGold;
     
     // MUST provide a Match array of the last 10 matches
-    public LastMatches(String summoner, List<Match> matches) {
+    public LastMatches(String summoner, List<Match> matches, Date updateTime) {
+        this.updateTime = updateTime;
         setSummoner(summoner);
         setMatches(matches);
         int totalMatches = matches.size();
@@ -67,13 +71,33 @@ public class LastMatches {
         setAverageTotalGold(averageNum);
     }
     
-    public String  getSummoner()          { return summoner; }
-    public List<Match> getMatches()           { return matches; }
-    public float   getAverageKills()      { return averageKills; }
-    public float   getAverageDeaths()     { return averageDeaths; }
-    public float   getAverageAssists()    { return averageAssists; }
-    public float   getAverageCreepScore() { return averageCreepScore; }
-    public float   averageTotalGold()     { return averageTotalGold; }
+    public String  getSummoner() { return summoner; }
+    public List<Match> getMatches() {
+        return matches; 
+    }
+    public float getAverageKills() { 
+        return AverageKills; 
+    }
+    public float getAverageDeaths() { 
+        return AverageDeaths; 
+    }
+    public float getAverageAssists() {
+        return AverageAssists; 
+    }
+    public float getAverageCreepScore() { 
+        return averageCreepScore; 
+    }
+    public float getAverageTotalGold() {
+        return averageTotalGold; 
+    }
+    
+    public boolean needsUpdated(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.HOUR_OF_DAY, -1);   
+        Date compare = cal.getTime();
+        return updateTime.before(compare);
+    }
     
     private void setSummoner(String summoner) {
         this.summoner = summoner; 
@@ -82,13 +106,13 @@ public class LastMatches {
         this.matches = matches; 
     }
     private void setAverageKills(float averageKills) { 
-        this.averageKills = averageKills; 
+        this.AverageKills = averageKills; 
     }
     private void setAverageDeaths(float averageDeaths) { 
-        this.averageDeaths = averageDeaths; 
+        this.AverageDeaths = averageDeaths; 
     }
     private void setAverageAssists(float averageAssists) { 
-        this.averageAssists = averageAssists; 
+        this.AverageAssists = averageAssists; 
     }
     private void setAverageCreepScore(float averageCreepScore) { 
         this.averageCreepScore = averageCreepScore; 
