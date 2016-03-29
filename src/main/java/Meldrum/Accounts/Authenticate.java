@@ -5,9 +5,14 @@
  */
 package Meldrum.Accounts;
 
+import cs313.meldrum.ownsbey.LeagueInteraction.LeagueInteraction;
 import cs313.meldrum.ownsbey.db.dbHandler;
+import cs313.meldrum.ownsbey.leagueapi.LastMatches;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,17 +41,33 @@ public class Authenticate extends HttpServlet {
         HttpSession session = request.getSession();
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
-        dbHandler db = new dbHandler();
         
-        String userId = db.getValidUser(userName, password);
+        dbHandler db = new dbHandler();        
+        String summonerName = db.getValidUser(userName, password);
         
-        if (userId != null)
+        if (summonerName != null)
         {
+            LeagueInteraction li = new LeagueInteraction();
             List<String> followList;
-            followList = db.getFollowList(userName);
-            request.setAttribute("errorSignIn", false);            
+            LastMatches matchHistory;
+            
+            matchHistory = li.GetRecentGames(summonerName);
+            followList = db.getFollowList(summonerName);
+            
+            if(followList == null){
+                followList = new ArrayList<String>();
+            }
+            Map<String, LastMatches> favoritesStats = new HashMap<>();
+            for(String favorite: followList){
+                LastMatches favoriteHistory = li.GetRecentGames(favorite);
+                favoritesStats.put(favorite, favoriteHistory);
+            }
+                     
             session.setAttribute("currentUser", userName);
-            session.setAttribute("currentSummoner", userId);
+            session.setAttribute("currentSummoner", summonerName);
+            
+            session.setAttribute("matchHistory", matchHistory);
+            session.setAttribute("followList", favoritesStats);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }
         else

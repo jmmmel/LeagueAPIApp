@@ -6,9 +6,16 @@
 package cs313.meldrum.ownsbey.LeagueInteraction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cs313.meldrum.ownsbey.db.dbHandler;
+import cs313.meldrum.ownsbey.leagueapi.LastMatches;
+import cs313.meldrum.ownsbey.leagueapi.Match;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -45,22 +52,46 @@ public class LeagueInteraction {
         RECENT_HISTORY += key;
         
     }
-    public Map<String, Object> GetRecentGames(String summonerName){
+    public LastMatches GetRecentGames(String summonerName){
+        LastMatches results = null;
         try {
-            String formattedString = String.format(SUMMONER_DETAILS_NAME, summonerName);
-            URL url = new URL(formattedString);
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> map = mapper.readValue(url, Map.class);
-            Map<String, Object> test = (Map<String, Object>)map.get(summonerName.toLowerCase());
-            System.out.println(test.toString());
-            String id = test.get("id").toString();
-            formattedString = String.format(RECENT_HISTORY, id);
-            url = new URL(formattedString);
-            map = mapper.readValue(url, Map.class);
-            return map;
+            dbHandler db = new dbHandler();
+            results = db.getMatchHistory(summonerName);
+            if (results == null || results.needsUpdated()){
+                String formattedString = String.format(SUMMONER_DETAILS_NAME, summonerName);
+                URL url = new URL(formattedString);
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> map = mapper.readValue(url, Map.class);
+                Map<String, Object> test = (Map<String, Object>)map.get(summonerName.toLowerCase());
+                System.out.println(test.toString());
+                String id = test.get("id").toString();
+                formattedString = String.format(RECENT_HISTORY, id);
+                url = new URL(formattedString);
+                map = mapper.readValue(url, Map.class);
+                List<Match> matchCollection = new ArrayList<Match>();
+                List<LinkedHashMap<String, Object>> games = (ArrayList<LinkedHashMap<String, Object>>)map.get("games");
+                for(LinkedHashMap<String, Object> game : games){
+                    LinkedHashMap<String, Object> stats = (LinkedHashMap<String, Object>)game.get("stats");
+                    int userId = 1;
+                    Integer kills = (Integer)stats.get("championsKilled");
+                    Integer deaths = (Integer)stats.get("numDeaths");
+                    Integer assists = (Integer)stats.get("assists");
+                    Integer creepScore = (Integer)stats.get("minionsKilled");
+                    Integer gold = (Integer)stats.get("goldEarned");
+                    if(kills == null){ kills = 0;}
+                    if(deaths == null){ deaths = 0;}
+                    if(assists == null){ assists = 0;}
+                    if(creepScore == null){ creepScore = 0;}
+                    if(gold == null){ gold = 0;}
+                    matchCollection.add(new Match(kills,deaths,assists,creepScore,gold));
+                }
+                results = new LastMatches(summonerName, matchCollection, new Date());
+                db.updateMatchHistory(results);
+            } 
+            
         } catch (Exception ex) {
             Logger.getLogger(LeagueInteraction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return results;
     }
 }

@@ -3,6 +3,5 @@ Meldrum\Accounts\Authenticate.class
 cs313\meldrum\ownsbey\LeagueInteraction\LeagueInteraction.class
 cs313\meldrum\ownsbey\leagueapi\Match.class
 cs313\meldrum\ownsbey\db\dbHandler.class
-cs313\meldrum\ownsbey\leagueapi\ShowAPI.class
 cs313\meldrum\ownsbey\leagueapi\LastMatches.class
 Meldrum\Accounts\Logout.class
