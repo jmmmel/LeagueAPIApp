@@ -5,8 +5,6 @@
  */
 package cs313.meldrum.ownsbey.leagueapi;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,16 +14,14 @@ import java.util.List;
 public class LastMatches {    
     private String summoner;
     private List<Match> matches;
-    private Date updateTime;
-    private float AverageKills;
-    private float AverageDeaths;
-    private float AverageAssists;
+    private float averageKills;
+    private float averageDeaths;
+    private float averageAssists;
     private float averageCreepScore;
     private float averageTotalGold;
     
     // MUST provide a Match array of the last 10 matches
-    public LastMatches(String summoner, List<Match> matches, Date updateTime) {
-        this.updateTime = updateTime;
+    public LastMatches(String summoner, List<Match> matches) {
         setSummoner(summoner);
         setMatches(matches);
         int totalMatches = matches.size();
@@ -71,33 +67,13 @@ public class LastMatches {
         setAverageTotalGold(averageNum);
     }
     
-    public String  getSummoner() { return summoner; }
-    public List<Match> getMatches() {
-        return matches; 
-    }
-    public float getAverageKills() { 
-        return AverageKills; 
-    }
-    public float getAverageDeaths() { 
-        return AverageDeaths; 
-    }
-    public float getAverageAssists() {
-        return AverageAssists; 
-    }
-    public float getAverageCreepScore() { 
-        return averageCreepScore; 
-    }
-    public float getAverageTotalGold() {
-        return averageTotalGold; 
-    }
-    
-    public boolean needsUpdated(){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.HOUR_OF_DAY, -1);   
-        Date compare = cal.getTime();
-        return updateTime.before(compare);
-    }
+    public String  getSummoner()          { return summoner; }
+    public List<Match> getMatches()           { return matches; }
+    public float   getAverageKills()      { return averageKills; }
+    public float   getAverageDeaths()     { return averageDeaths; }
+    public float   getAverageAssists()    { return averageAssists; }
+    public float   getAverageCreepScore() { return averageCreepScore; }
+    public float   averageTotalGold()     { return averageTotalGold; }
     
     private void setSummoner(String summoner) {
         this.summoner = summoner; 
@@ -106,13 +82,13 @@ public class LastMatches {
         this.matches = matches; 
     }
     private void setAverageKills(float averageKills) { 
-        this.AverageKills = averageKills; 
+        this.averageKills = averageKills; 
     }
     private void setAverageDeaths(float averageDeaths) { 
-        this.AverageDeaths = averageDeaths; 
+        this.averageDeaths = averageDeaths; 
     }
     private void setAverageAssists(float averageAssists) { 
-        this.AverageAssists = averageAssists; 
+        this.averageAssists = averageAssists; 
     }
     private void setAverageCreepScore(float averageCreepScore) { 
         this.averageCreepScore = averageCreepScore; 

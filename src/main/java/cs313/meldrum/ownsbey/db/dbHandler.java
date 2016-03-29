@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -58,7 +57,7 @@ public class dbHandler {
     }
     
     public String getValidUser(String username, String password){
-        String summonerName = null;
+        String id = null;
         try {
             String hashPass = simpleMD5Hash.Hash(password);
             String query = "SELECT summonerName FROM users WHERE username=? AND password=?";
@@ -67,17 +66,17 @@ public class dbHandler {
             stmt.setString(2,hashPass);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-                summonerName = rs.getString("summonerName");
+                id = rs.getString("summonerName");
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return summonerName;        
+        return id;        
     }
-    
     public LastMatches getMatchHistory(String summonerName){
         LastMatches matchHistory = null;
         try {
@@ -88,22 +87,20 @@ public class dbHandler {
             stmt = conn.prepareStatement(query);
             stmt.setString(1,summonerName);
             ResultSet rs = stmt.executeQuery();
-            Date updateTime = null;
             List<Match> currMatches = new ArrayList<>();
-            if(rs.next()){
-                do {
-                    updateTime = rs.getDate("createdTime");
-                    currMatches.add(new Match(
-                            rs.getInt("kills"), 
-                            rs.getInt("deaths"), 
-                            rs.getInt("assists"),
-                            rs.getInt("creepScore"), 
-                            rs.getInt("gold")));
-                }while(rs.next());
-                rs.close();
-                stmt.close();
-                matchHistory = new LastMatches(summonerName, currMatches, updateTime);
+            while(rs.next()){
+                summonerName = rs.getString("sumName");
+                currMatches.add(new Match(
+                        rs.getInt("kills"), 
+                        rs.getInt("deaths"), 
+                        rs.getInt("assists"),
+                        rs.getInt("creepScore"), 
+                        rs.getInt("totalGold")));
             }
+            rs.close();
+            stmt.close();
+            conn.close();
+            matchHistory = new LastMatches(summonerName, currMatches);
         } catch (SQLException ex) {
             Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -113,15 +110,24 @@ public class dbHandler {
         int id = -1;
         try {
             String query = "DELETE FROM statistics "
-                    + "WHERE summonerName=?";
+                    + "WHERE userId IN (SELECT id FROM users WHERE summonerName=?)";
             stmt = conn.prepareStatement(query);
             stmt.setString(1, matchHistory.getSummoner());
             stmt.execute();
             stmt.close();
+            query = "SELECT id FROM users WHERE summonerName=?";
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,matchHistory.getSummoner());
+            ResultSet rs = stmt.executeQuery();
             
+            while(rs.next()){
+                id = rs.getInt("id");
+            }
+            rs.close();
+            stmt.close();
             for (Match game: matchHistory.getMatches()){
                 query = "INSERT INTO `leagueapi`.`statistics`\n" +
-                        "(`summonerName`,\n" +
+                        "(`userId`,\n" +
                         "`kills`,\n" +
                         "`deaths`,\n" +
                         "`assists`,\n" +
@@ -137,7 +143,7 @@ public class dbHandler {
                         "?,\n" +
                         "NOW())";
                 stmt = conn.prepareStatement(query);
-                stmt.setString(1, matchHistory.getSummoner());
+                stmt.setInt(1, id);
                 stmt.setInt(2, game.getKills());
                 stmt.setInt(3, game.getDeaths());
                 stmt.setInt(4, game.getAssists());
@@ -146,28 +152,36 @@ public class dbHandler {
                 stmt.execute();            
                 stmt.close();
             }            
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public List<String> getFollowList(String summonerName) {
-        List<String> favorites = null;
-        try {            
-            String query = "SELECT f.followedSummoner FROM favorites f JOIN users u ON u.id=f.userId WHERE u.summonerName=?";
+    public List<String> getFollowList(String userName) {
+        LastMatches matchHistory = null;
+        try {
+            String query = "SELECT Id FROM user WHERE username=? AND password=?";
             stmt = conn.prepareStatement(query);
-            stmt.setString(1, summonerName);
             ResultSet rs = stmt.executeQuery();
-            favorites = new ArrayList<>();
+            List<Match> currMatches = new ArrayList<>();
+            String summonerName = "";
             while(rs.next()){
-                favorites.add(rs.getString("followedSummoner"));
+                summonerName = rs.getString("sumName");
+                currMatches.add(new Match(
+                        rs.getInt("kills"), 
+                        rs.getInt("deaths"), 
+                        rs.getInt("assists"),
+                        rs.getInt("creepScore"), 
+                        rs.getInt("totalGold")));
             }
             rs.close();
             stmt.close();
             conn.close();
+            matchHistory = new LastMatches(summonerName, currMatches);
         } catch (SQLException ex) {
             Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return favorites;
+        return null;
     }
 }
