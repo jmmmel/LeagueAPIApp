@@ -5,12 +5,14 @@
  */
 package Meldrum.Accounts;
 
+import cs313.meldrum.ownsbey.db.dbHandler;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,6 +29,12 @@ public class Register extends HttpServlet {
      * @param response servlet response
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String sumName  = request.getParameter("sumName");
+        
+        dbHandler db = new dbHandler();
         
     }
 

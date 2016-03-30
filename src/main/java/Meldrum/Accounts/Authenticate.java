@@ -42,7 +42,7 @@ public class Authenticate extends HttpServlet {
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
         
-        dbHandler db = new dbHandler();        
+        dbHandler db = new dbHandler();
         String summonerName = db.getValidUser(userName, password);
         
         if (summonerName != null)
@@ -55,7 +55,7 @@ public class Authenticate extends HttpServlet {
             followList = db.getFollowList(summonerName);
             
             if(followList == null){
-                followList = new ArrayList<String>();
+                followList = new ArrayList<>();
             }
             Map<String, LastMatches> favoritesStats = new HashMap<>();
             for(String favorite: followList){
