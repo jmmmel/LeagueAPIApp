@@ -35,7 +35,7 @@ public class Register extends HttpServlet {
         String sumName  = request.getParameter("sumName");
         
         dbHandler db = new dbHandler();
-        
+        db.addNewUser(username, password, sumName);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
