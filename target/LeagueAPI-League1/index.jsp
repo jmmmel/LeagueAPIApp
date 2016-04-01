@@ -48,7 +48,24 @@ and open the template in the editor.
                                     <b>Average CS:</b> ${favorite.value.averageCreepScore} <b>Average Gold:</b> ${favorite.value.averageTotalGold}
                                 </td>
                             </tr>
-                        </c:forEach>                        
+                        </c:forEach>
+                        <form action="AddFavorite" method="POST">
+                            <tr>
+                                <td>
+                                    New followed summoner name:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="otherSummoner" name="otherSummoner">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" value="Add Summoner">
+                                </td>
+                            </tr>
+                        </form>
                     </table>
                 </td>
                 <td class="mainTableTD">
