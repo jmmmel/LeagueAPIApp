@@ -7,6 +7,8 @@ package Meldrum.Accounts;
 
 import cs313.meldrum.ownsbey.db.dbHandler;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,13 +31,26 @@ public class Register extends HttpServlet {
      * @param response servlet response
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String sumName  = request.getParameter("sumName");
-        
-        dbHandler db = new dbHandler();
-        db.addNewUser(username, password, sumName);
+        try {
+            System.out.println("CALLED");
+            
+            HttpSession session = request.getSession();
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String sumName  = request.getParameter("sumName");
+            
+            System.out.println("username: " + username);
+            System.out.println("password: " + password);
+            System.out.println("sumName:  " + sumName);
+            
+            dbHandler db = new dbHandler();
+            db.addNewUser(username, password, sumName);
+            
+            request.getRequestDispatcher("SignIn.jsp").forward(request, response);
+            
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,0 +1,8 @@
+cs313\meldrum\ownsbey\db\simpleMD5Hash.class
+Meldrum\Accounts\Authenticate.class
+cs313\meldrum\ownsbey\LeagueInteraction\LeagueInteraction.class
+cs313\meldrum\ownsbey\leagueapi\Match.class
+cs313\meldrum\ownsbey\db\dbHandler.class
+Meldrum\Accounts\Register.class
+cs313\meldrum\ownsbey\leagueapi\LastMatches.class
+Meldrum\Accounts\Logout.class
