@@ -66,7 +66,7 @@
                         Games API. Visit https://developer.riotgames.com/terms 
                         for more details. <br><br>
                         
-                        <a href="registration.html">Create a new account</a>
+                        <a href="registration.jsp">Create a new account</a>
                     </fieldset>
                 </form>
             </div>

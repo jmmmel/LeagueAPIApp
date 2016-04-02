@@ -40,12 +40,18 @@ and open the template in the editor.
             <tr>
                 <td class="mainTableTD">
                     <table class="leftSubTable">
-                        <c:forEach items="${followList}" var="favorite"> 
+                        <c:forEach items="${followList}" var="favorite">                            
                             <tr>
                                 <td class="subTableTD">${favorite.key}</td>
                                 <td class="subTableTD"><b>Average K/D/A: </b>
                                     ${favorite.value['averageKills']}/${favorite.value.averageDeaths}/${favorite.value.averageAssists} <br>
                                     <b>Average CS:</b> ${favorite.value.averageCreepScore} <b>Average Gold:</b> ${favorite.value.averageTotalGold}
+                                </td>
+                                <td>
+                                    <form action="CompareView" method="POST">
+                                        <input type="hidden" name="compareSummoner" value="${favorite.key}"/>
+                                        <button type="submit">Compare</button>
+                                    </form>
                                 </td>
                             </tr>
                         </c:forEach>                        

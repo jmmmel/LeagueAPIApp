@@ -111,12 +111,18 @@ public class dbHandler {
     
     public void addNewUser(String username, String password, String sumName) {
         try {
-            String query = "INSERT INTO 'leagueapi'.'users' " + 
-                    "('username', 'password', summonerName') " + 
-                    "VALUES (?, ?, ?)";
+            String query = "INSERT INTO `leagueapi`.`users` " +
+                "(`username`, " +
+                "`password`, " +
+                "`summonerName`) " + 
+                "VALUES " +
+                "(?, " +
+                "?, " +
+                "?)";
+
             stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
-            stmt.setString(2, password);
+            stmt.setString(2, simpleMD5Hash.Hash(password));
             stmt.setString(3, sumName);
             stmt.execute();
             stmt.close();

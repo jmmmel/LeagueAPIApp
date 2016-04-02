@@ -17,12 +17,12 @@
     <body>
         <h1>Create an account</h1>
         
-        <form>
             <p class="centerMe">In order to protect your League of Legends account,
             DO NOT use either your Riot Games username OR password 
             to register with our system.</p>
-            <table class="registrationTable">
-                <form action="Register" method="POST">
+            <form action="Register" method="POST">
+                <table class="registrationTable">
+                
                     <tr>
                         <td>
                             <table>
@@ -58,7 +58,7 @@
                             <input type="submit" class="centerMe">
                         </td>
                     </tr>
-                </form>
+               
             </table>
         </form>
     </body>
