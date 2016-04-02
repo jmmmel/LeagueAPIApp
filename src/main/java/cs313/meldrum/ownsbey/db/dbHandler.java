@@ -82,8 +82,7 @@ public class dbHandler {
         try {
             String query = "SELECT s.kills, s.deaths, s.assists, s.creepScore, s.gold, s.createdTime "
                     + "FROM statistics s "
-                    + "JOIN users u ON u.id=s.userId "
-                    + "WHERE u.summonerName=?";
+                    + "WHERE s.summonerName=?";
             stmt = conn.prepareStatement(query);
             stmt.setString(1,summonerName);
             ResultSet rs = stmt.executeQuery();
@@ -91,7 +90,7 @@ public class dbHandler {
             List<Match> currMatches = new ArrayList<>();
             if(rs.next()){
                 do {
-                    updateTime = rs.getDate("createdTime");
+                    updateTime = rs.getTimestamp("createdTime");
                     currMatches.add(new Match(
                             rs.getInt("kills"), 
                             rs.getInt("deaths"), 
@@ -138,15 +137,22 @@ public class dbHandler {
             stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
-            String userId = rs.getString("id");
             
-            query = "INSERT INTO 'leagueapi'.'favorites' " +
-                "('userId', 'followedSummoner') " +
-                "VALUES (?, ?)";
-            stmt = conn.prepareStatement(query);
-            stmt.setString(1, userId);
-            stmt.setString(2, otherSummoner);
-            stmt.executeQuery();
+            if(rs.next()){
+                int userId = rs.getInt("id");
+                stmt.close();
+                query = "INSERT INTO `leagueapi`.`favorites`\n" +
+                        "(`userId`,\n" +
+                        "`followedSummoner`)\n" +
+                        "VALUES\n" +
+                        "(?,\n" +
+                        "?);";
+                stmt = conn.prepareStatement(query);
+                stmt.setInt(1, userId);
+                stmt.setString(2, otherSummoner);
+                stmt.execute();
+                stmt.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
         }

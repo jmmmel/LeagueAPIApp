@@ -5,9 +5,15 @@
  */
 package Meldrum.Accounts;
 
+import cs313.meldrum.ownsbey.LeagueInteraction.LeagueInteraction;
 import cs313.meldrum.ownsbey.db.dbHandler;
+import cs313.meldrum.ownsbey.leagueapi.LastMatches;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,10 +23,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Jake
+ * @author James
  */
-@WebServlet(name = "AddFavorite", urlPatterns = {"/AddFavorite"})
-public class AddFavorite extends HttpServlet {
+@WebServlet(name = "MainPage", urlPatterns = {"/MainPage"})
+public class MainPage extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,13 +40,29 @@ public class AddFavorite extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String username = (String)session.getAttribute("currentUser");
-        String otherSummoner = request.getParameter("otherSummoner");
-        
+        String summonerName = (String)session.getAttribute("currentSummoner");
         dbHandler db = new dbHandler();
-        db.AddFavorite(username, otherSummoner);
-        
-        request.getRequestDispatcher("MainPage").forward(request, response);
+        if (summonerName != null)
+        {
+            LeagueInteraction li = new LeagueInteraction();
+            List<String> followList;
+            LastMatches matchHistory;
+            
+            matchHistory = li.GetRecentGames(summonerName);
+            followList = db.getFollowList(summonerName);
+            
+            if(followList == null){
+                followList = new ArrayList<>();
+            }
+            Map<String, LastMatches> favoritesStats = new HashMap<>();
+            for(String favorite: followList){
+                LastMatches favoriteHistory = li.GetRecentGames(favorite);
+                favoritesStats.put(favorite, favoriteHistory);
+            }            
+            session.setAttribute("matchHistory", matchHistory);
+            session.setAttribute("followList", favoritesStats);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

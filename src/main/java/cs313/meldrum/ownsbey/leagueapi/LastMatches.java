@@ -96,7 +96,7 @@ public class LastMatches {
         cal.setTime(new Date());
         cal.add(Calendar.HOUR_OF_DAY, -1);   
         Date compare = cal.getTime();
-        return updateTime.before(compare);
+        return updateTime.getTime() < compare.getTime();
     }
     
     private void setSummoner(String summoner) {

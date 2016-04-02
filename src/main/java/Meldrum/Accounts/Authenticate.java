@@ -68,7 +68,7 @@ public class Authenticate extends HttpServlet {
             
             session.setAttribute("matchHistory", matchHistory);
             session.setAttribute("followList", favoritesStats);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("MainPage").forward(request, response);
         }
         else
         {

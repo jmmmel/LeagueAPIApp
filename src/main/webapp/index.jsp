@@ -45,7 +45,7 @@ and open the template in the editor.
                                 <td class="subTableTD">${favorite.key}</td>
                                 <td class="subTableTD"><b>Average K/D/A: </b>
                                     ${favorite.value['averageKills']}/${favorite.value.averageDeaths}/${favorite.value.averageAssists} <br>
-                                    <b>Average CS:</b> ${favorite.value.averageCreepScore} <b>Average Gold:</b> ${favorite.value.averageTotalGold}
+                                    <b>Average CS:</b> ${favorite.value.averageCreepScore}<br> <b>Average Gold:</b> ${favorite.value.averageTotalGold}
                                 </td>
                                 <td>
                                     <form action="CompareView" method="POST">
@@ -74,7 +74,7 @@ and open the template in the editor.
                         </form>
                     </table>
                 </td>
-                <td class="mainTableTD">
+                <td class="mainTableTD topAlign">
                     <table>
                         <c:forEach items="${matchHistory.matches}" var="match" varStatus="count">
                             <tr>
