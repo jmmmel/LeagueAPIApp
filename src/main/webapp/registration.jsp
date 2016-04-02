@@ -17,48 +17,46 @@
     <body>
         <h1>Create an account</h1>
         
+        <form action="Register" method="POST">
             <p class="centerMe">In order to protect your League of Legends account,
             DO NOT use either your Riot Games username OR password 
             to register with our system.</p>
-            <form action="Register" method="POST">
-                <table class="registrationTable">
-                
-                    <tr>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        Username: 
-                                    </td>
-                                    <td>
-                                        <input type="text" name="username">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Password: 
-                                    </td>
-                                    <td>
-                                        <input type="password" name="password">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Summoner Name:
-                                    </td>
-                                    <td>
-                                        <input type="text" name="sumName">
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="submit" class="centerMe">
-                        </td>
-                    </tr>
-               
+            <table class="registrationTable">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    Username: 
+                                </td>
+                                <td>
+                                    <input type="text" name="username">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Password: 
+                                </td>
+                                <td>
+                                    <input type="password" name="password">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Summoner Name:
+                                </td>
+                                <td>
+                                    <input type="text" name="sumName">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Register" class="centerMe">
+                    </td>
+                </tr>
             </table>
         </form>
     </body>

@@ -131,6 +131,27 @@ public class dbHandler {
         }
     }
     
+    public void AddFavorite(String username, String otherSummoner) {
+        try {            
+            String query = "SELECT id FROM users WHERE username=?";
+            
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            String userId = rs.getString("id");
+            
+            query = "INSERT INTO 'leagueapi'.'favorites' " +
+                "('userId', 'followedSummoner') " +
+                "VALUES (?, ?)";
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, userId);
+            stmt.setString(2, otherSummoner);
+            stmt.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(dbHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void updateMatchHistory(LastMatches matchHistory){
         int id = -1;
         try {
