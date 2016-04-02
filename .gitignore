@@ -1,3 +1,5 @@
 /src/main/java/cs313/meldrum/ownsbey/LeagueInteraction/apiProperties.properties
 /src/main/resources/apiProperties.properties
 /src/main/resources/dbProperties.properties
+/target/classes/dbProperties.properties
+/target/classes/apiProperties.properties
