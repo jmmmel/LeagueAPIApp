@@ -5,6 +5,7 @@
  */
 package cs313.meldrum.ownsbey.leagueapi;
 
+import cs313.meldrum.ownsbey.LeagueInteraction.LeagueInteraction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -33,9 +34,16 @@ public class CompareView extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String sumName  = request.getParameter("sumName");
+        String mainUser = (String)session.getAttribute("currentSummoner");
+        String compareSummoner = request.getParameter("compareSummoner");
+        
+        LeagueInteraction li = new LeagueInteraction();
+        LastMatches main = li.GetRecentGames(mainUser);
+        LastMatches compare = li.GetRecentGames(compareSummoner);
+        
+        request.setAttribute("main", main);
+        request.setAttribute("compare", compare);
+        request.getRequestDispatcher("compareSummoners.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
