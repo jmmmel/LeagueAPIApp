@@ -3,3 +3,5 @@
 /src/main/resources/dbProperties.properties
 /target/classes/dbProperties.properties
 /target/classes/apiProperties.properties
+*.properties
+/target/
